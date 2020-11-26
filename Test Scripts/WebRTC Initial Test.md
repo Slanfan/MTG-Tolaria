@@ -1,14 +1,14 @@
-#WebRTC testing
+# WebRTC testing
 
 *Initial test of audio and video between two players paired in an event*
 
-##Organizer steps##
+## Organizer steps
 1. Create a new Event with [EVENT_NAME] and the online flag set to Yes
 2. Wait for all the players to sign up
 3. Pair the first round
 4. Wait for players to report back with their audio and video results
 
-##Player steps##
+## Player steps
 1. Open a new tab in Incognito mode using Chrome browser
 2. Navigate to [tolaria.app](https://tolaria.app)
 3. Sign in or sign up
