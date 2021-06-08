@@ -3659,7 +3659,7 @@ Destroy all creatures. They can't be regenerated. Each player gains life equal t
 376 – STARVATION
 (Very Rare Enchantment (Black))
 
-Starvation– {2}{B}{B}
+Starvation – {2}{B}{B}
 Enchantment
 Each creature gets -X/-X, where X is the number of creatures controlled by that creature's controller.
 
