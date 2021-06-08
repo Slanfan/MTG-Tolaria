@@ -2708,7 +2708,7 @@ Although Changeling's triggered ability is targeted, its “enters the battlefie
 282 – HYPERACTIVITY
 (Rare Enchantment (Multicolor))
 
-Hyperactivity– {1}{G}{U}{U}
+Hyperactivity – {1}{G}{U}{U}
 Chaotic Enchantment – Aura
 Enchant creature
 {G}{U}: Untap enchanted creature, and Hyperactivity deals 1 damage to it.
