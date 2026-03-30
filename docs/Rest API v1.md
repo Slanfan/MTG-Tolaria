@@ -12,7 +12,7 @@ All endpoints require a Bearer token in the `Authorization` header.
 Authorization: Bearer <your-api-token>
 ```
 
-A token can be requested from the platform administrator.
+To obtain a token, contact the platform administrator.
 
 ---
 
@@ -40,8 +40,10 @@ GET /match-info
 {
   "players": [
     {
+      "playerDocId": "string",
       "name": "string",
       "record": "2-1-0",
+      "points": 6,
       "country": "Sweden | null",
       "clubs": [
         {
@@ -59,13 +61,19 @@ GET /match-info
         "origin": "https://..."
       }
     }
-  ]
+  ],
+  "playerMap": {
+    "1": { "playerDocId": "string", "name": "string", "..." },
+    "2": { "playerDocId": "string", "name": "string", "..." }
+  }
 }
 ```
 
 **Notes**
 - `players` always contains at most 2 entries. Bye matches will have 1.
-- `record` reflects results from all completed rounds in the tournament.
+- `playerMap` keys are `1` and `2`, mirroring the player order in the `players` array.
+- `record` and `points` reflect results from rounds **prior** to the requested round.
+- `points` is computed as 3 per match win + 1 per draw.
 - `clubs`, `deckName`, `deckId`, `deckPhotoUrl`, and `deckUrls` are empty/null if not applicable.
 
 ---
