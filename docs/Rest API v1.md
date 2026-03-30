@@ -38,6 +38,8 @@ GET /match-info
 
 ```json
 {
+  "roundNumber": 3,
+  "phase": "swiss | bracket",
   "players": [
     {
       "playerDocId": "string",
@@ -70,6 +72,8 @@ GET /match-info
 ```
 
 **Notes**
+- `roundNumber` is the resolved round — either the one passed in or the event's active round.
+- `phase` is `swiss` or `bracket`, derived from the tournament's current status.
 - `players` always contains at most 2 entries. Bye matches will have 1.
 - `playerMap` keys are `1` and `2`, mirroring the player order in the `players` array.
 - `record` and `points` reflect results from rounds **prior** to the requested round.
