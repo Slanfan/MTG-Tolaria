@@ -28,11 +28,11 @@ GET /match-info
 
 **Query Parameters**
 
-| Parameter     | Type   | Required | Description                        |
-|---------------|--------|----------|------------------------------------|
-| tournamentId  | string | Yes      | The tournament document ID         |
-| roundNumber   | number | Yes      | The round number                   |
-| tableNumber   | number | Yes      | The table number                   |
+| Parameter     | Type   | Required | Description                                                      |
+|---------------|--------|----------|------------------------------------------------------------------|
+| tournamentId  | string | Yes      | The tournament document ID                                       |
+| roundNumber   | number | No       | The round number. Defaults to the tournament's active round      |
+| tableNumber   | number | Yes      | The table number                                                 |
 
 **Response**
 
