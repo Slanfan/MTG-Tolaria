@@ -12,7 +12,7 @@ All endpoints require a Bearer token in the `Authorization` header.
 Authorization: Bearer <your-api-token>
 ```
 
-Tokens are stored in the `apiTokens` collection in Firestore and managed manually by the platform administrator.
+A token can be requested from the platform administrator.
 
 ---
 
