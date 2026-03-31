@@ -126,6 +126,7 @@ GET /pairings
           "seed": 1,
           "record": "2-0-0",
           "points": 6,
+          "deckName": "string",
           "country": "Finland | null",
           "clubs": [
             {
@@ -144,6 +145,7 @@ GET /pairings
           "seed": 4,
           "record": "1-1-0",
           "points": 3,
+          "deckName": "string",
           "country": "Sweden | null",
           "clubs": null
         }
@@ -162,6 +164,7 @@ GET /pairings
 - `name.display` is `"first last"` from the player document.
 - Bye matches will have only 1 player in the `players` array.
 - Matches without a valid table number are excluded.
+- `deckName` is empty string if no deck has been submitted.
 
 ---
 
@@ -201,6 +204,7 @@ GET /standings
       "gameWinPercentage": 0.88,
       "opponentGameWinPercentage": 0.65,
       "dropped": false,
+      "deckName": "string",
       "country": "Sweden | null",
       "clubs": [
         {
@@ -226,6 +230,7 @@ GET /standings
 - All percentages use a minimum floor of `0.33` per DCI/MTR rules.
 - Records and tiebreakers are computed on the fly from match documents, not stored values.
 - `name.display` is `"first last"` from the player document.
+- `deckName` is empty string if no deck has been submitted.
 
 ---
 
