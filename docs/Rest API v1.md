@@ -67,12 +67,13 @@ GET /match-info
         "medium": "https://...",
         "large": "https://...",
         "origin": "https://..."
-      }
+      },
+      "seed": 1
     }
   ],
   "playerMap": {
-    "1": { "playerDocId": "string", "name": { "first": "string", "last": "string", "nick": "string", "display": "string" }, "..." },
-    "2": { "playerDocId": "string", "name": { "..." }, "..." }
+    "1": { "playerDocId": "string", "name": { "first": "string", "last": "string", "nick": "string", "display": "string" }, "seed": 1, "..." },
+    "2": { "playerDocId": "string", "name": { "..." }, "seed": 4, "..." }
   }
 }
 ```
@@ -82,7 +83,8 @@ GET /match-info
 - `roundNumber` is the resolved round — either the one passed in or the event's active round.
 - `players` always contains at most 2 entries. Bye matches will have 1.
 - `playerMap` keys are `1` and `2`, mirroring the player order in the `players` array.
-- `record` and `points` reflect results from rounds **prior** to the requested round.
+- For `swiss` phase: `record` and `points` reflect rounds **prior** to the requested round; `seed` is `null`.
+- For `playoff` phase: `record` and `points` reflect the **full swiss phase** (all non-bracket matches); `seed` is the player's swiss seed (1 = top seed).
 - `points` is computed as 3 per match win + 1 per draw.
 - `name.display` is `"first last"` from the player document.
 - `clubs`, `deckName`, `deckId`, `deckPhotoUrl`, and `deckUrls` are empty/null if not applicable.
@@ -99,15 +101,17 @@ GET /pairings
 
 **Query Parameters**
 
-| Parameter     | Type   | Required | Description                        |
-|---------------|--------|----------|------------------------------------|
-| tournamentId  | string | Yes      | The tournament document ID         |
-| roundNumber   | number | Yes      | The round number                   |
+| Parameter     | Type              | Required | Description                                                      |
+|---------------|-------------------|----------|------------------------------------------------------------------|
+| tournamentId  | string            | Yes      | The tournament document ID                                       |
+| roundNumber   | number            | Yes      | The round number                                                 |
+| phase         | `swiss\|playoff`  | Yes      | The phase to look up. Use `playoff` for bracket matches          |
 
 **Response**
 
 ```json
 {
+  "phase": "swiss",
   "pairings": [
     {
       "table": 1,
@@ -119,6 +123,7 @@ GET /pairings
             "nick": "string",
             "display": "string"
           },
+          "seed": 1,
           "record": "2-0-0",
           "points": 6,
           "country": "Finland | null",
@@ -136,6 +141,7 @@ GET /pairings
             "nick": "string",
             "display": "string"
           },
+          "seed": 4,
           "record": "1-1-0",
           "points": 3,
           "country": "Sweden | null",
@@ -149,8 +155,9 @@ GET /pairings
 
 **Notes**
 - Pairings are sorted by table number in ascending order.
-- Only Swiss/stage matches are returned. Bracket/playoff matches are excluded.
-- `record` and `points` reflect results from all rounds **prior** to the requested round.
+- For `swiss` phase: only swiss/stage matches are returned; `record` and `points` reflect rounds **prior** to the requested round; `seed` is always `null`.
+- For `playoff` phase: bracket matches are returned; `record` and `points` reflect the **full swiss phase** (all non-bracket matches); `seed` is the player's swiss seed (1 = top seed).
+- Table numbers for playoff matches are pre-assigned at bracket creation time, sorted by lowest seed (seed 1 = table 1).
 - `points` is computed as 3 per match win + 1 per draw.
 - `name.display` is `"first last"` from the player document.
 - Bye matches will have only 1 player in the `players` array.
