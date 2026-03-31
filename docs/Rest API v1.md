@@ -28,22 +28,28 @@ GET /match-info
 
 **Query Parameters**
 
-| Parameter     | Type   | Required | Description                                                      |
-|---------------|--------|----------|------------------------------------------------------------------|
-| tournamentId  | string | Yes      | The tournament document ID                                       |
-| roundNumber   | number | No       | The round number. Defaults to the tournament's active round      |
-| tableNumber   | number | Yes      | The table number                                                 |
+| Parameter     | Type              | Required | Description                                                      |
+|---------------|-------------------|----------|------------------------------------------------------------------|
+| tournamentId  | string            | Yes      | The tournament document ID                                       |
+| phase         | `swiss\|playoff`  | Yes      | The phase to look up. Use `playoff` for bracket matches          |
+| roundNumber   | number            | No       | The round number. Defaults to the tournament's active round      |
+| tableNumber   | number            | Yes      | The table number                                                 |
 
 **Response**
 
 ```json
 {
   "roundNumber": 3,
-  "phase": "swiss | bracket",
+  "phase": "swiss",
   "players": [
     {
       "playerDocId": "string",
-      "name": "string",
+      "name": {
+        "first": "string",
+        "last": "string",
+        "nick": "string",
+        "display": "string"
+      },
       "record": "2-1-0",
       "points": 6,
       "country": "Sweden | null",
@@ -65,19 +71,20 @@ GET /match-info
     }
   ],
   "playerMap": {
-    "1": { "playerDocId": "string", "name": "string", "..." },
-    "2": { "playerDocId": "string", "name": "string", "..." }
+    "1": { "playerDocId": "string", "name": { "first": "string", "last": "string", "nick": "string", "display": "string" }, "..." },
+    "2": { "playerDocId": "string", "name": { "..." }, "..." }
   }
 }
 ```
 
 **Notes**
+- `phase` must be provided by the caller. Use `swiss` for regular rounds and `playoff` for bracket matches.
 - `roundNumber` is the resolved round — either the one passed in or the event's active round.
-- `phase` is `swiss` or `bracket`, derived from the tournament's current status.
 - `players` always contains at most 2 entries. Bye matches will have 1.
 - `playerMap` keys are `1` and `2`, mirroring the player order in the `players` array.
 - `record` and `points` reflect results from rounds **prior** to the requested round.
 - `points` is computed as 3 per match win + 1 per draw.
+- `name.display` is `"first last"` from the player document.
 - `clubs`, `deckName`, `deckId`, `deckPhotoUrl`, and `deckUrls` are empty/null if not applicable.
 
 ---
@@ -106,8 +113,14 @@ GET /pairings
       "table": 1,
       "players": [
         {
-          "name": "string",
+          "name": {
+            "first": "string",
+            "last": "string",
+            "nick": "string",
+            "display": "string"
+          },
           "record": "2-0-0",
+          "points": 6,
           "country": "Finland | null",
           "clubs": [
             {
@@ -117,8 +130,14 @@ GET /pairings
           ]
         },
         {
-          "name": "string",
+          "name": {
+            "first": "string",
+            "last": "string",
+            "nick": "string",
+            "display": "string"
+          },
           "record": "1-1-0",
+          "points": 3,
           "country": "Sweden | null",
           "clubs": null
         }
@@ -131,7 +150,9 @@ GET /pairings
 **Notes**
 - Pairings are sorted by table number in ascending order.
 - Only Swiss/stage matches are returned. Bracket/playoff matches are excluded.
-- `record` reflects results from all rounds **prior** to the requested round.
+- `record` and `points` reflect results from all rounds **prior** to the requested round.
+- `points` is computed as 3 per match win + 1 per draw.
+- `name.display` is `"first last"` from the player document.
 - Bye matches will have only 1 player in the `players` array.
 - Matches without a valid table number are excluded.
 
@@ -160,7 +181,12 @@ GET /standings
       "rank": 1,
       "seed": 1,
       "playerDocId": "string",
-      "name": "string",
+      "name": {
+        "first": "string",
+        "last": "string",
+        "nick": "string",
+        "display": "string"
+      },
       "record": "3-0-0",
       "matchPoints": 9,
       "matchWinPercentage": 1.0,
@@ -192,6 +218,7 @@ GET /standings
 - Standings are not available for bracket-only events (returns `400`).
 - All percentages use a minimum floor of `0.33` per DCI/MTR rules.
 - Records and tiebreakers are computed on the fly from match documents, not stored values.
+- `name.display` is `"first last"` from the player document.
 
 ---
 
