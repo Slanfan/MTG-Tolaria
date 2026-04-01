@@ -367,6 +367,34 @@ Returns the full `IPlayerDetails` document as stored in Firestore. Key fields in
 
 ---
 
+### Index Players *(admin)*
+
+Rebuilds the internal player profile index for all players in a given tournament. Used to backfill the index for tournaments that predate the automatic indexing trigger, or to force a full refresh.
+
+```
+POST /index-players?tournamentId=<id>
+```
+
+**Query Parameters**
+
+| Parameter    | Type   | Required | Description                |
+|--------------|--------|----------|----------------------------|
+| tournamentId | string | Yes      | The tournament document ID |
+
+**Response**
+
+```json
+{
+  "indexed": 64
+}
+```
+
+**Notes**
+- Performs a full replace of the index — not a merge.
+- `indexed` is the total number of players written to the index.
+
+---
+
 ### Index Decks *(admin)*
 
 Rebuilds the internal deck name and image index for all players in a given tournament. Used to backfill the index for tournaments that predate the automatic indexing trigger, or to force a full refresh.
