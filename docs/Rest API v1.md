@@ -260,6 +260,73 @@ GET /standings
 
 ---
 
+### Players
+
+Returns all attending players for a tournament, including player profile, deck submission status, and deck imagery.
+
+```
+GET /players
+```
+
+**Query Parameters**
+
+| Parameter     | Type   | Required | Description                        |
+|---------------|--------|----------|------------------------------------|
+| tournamentId  | string | Yes      | The tournament document ID         |
+
+**Response**
+
+```json
+{
+  "players": [
+    {
+      "playerDocId": "string",
+      "name": {
+        "first": "string",
+        "last": "string",
+        "nick": "string",
+        "display": "string"
+      },
+      "country": "Sweden | null",
+      "clubs": [
+        {
+          "name": "MTG X-Files",
+          "logoUrl": "https://... | null"
+        }
+      ],
+      "dropped": false,
+      "hasCheckedIn": true,
+      "dietaryInformation": {
+        "hasRestrictions": true,
+        "information": "Vegan"
+      },
+      "deck": {
+        "deckName": "string",
+        "deckListDocId": "string | null",
+        "deckVersionDocId": "string | null",
+        "hasPhoto": true,
+        "hasList": true,
+        "imageUris": {
+          "origin": "https://... | null",
+          "large": "https://... | null",
+          "medium": "https://... | null",
+          "small": "https://... | null"
+        }
+      }
+    }
+  ]
+}
+```
+
+**Notes**
+- `deck` is `null` if the player has no deck submission record.
+- `deck.hasPhoto` and `deck.hasList` reflect whether the event required/received a photo or list submission.
+- `deck.imageUris` fields are individually `null` if not yet generated.
+- `dietaryInformation` is `null` if the event does not collect dietary information or the player has not provided it.
+- `dropped` is `true` if the player has dropped from the tournament.
+
+---
+
 ### Player Metadata
 
 Returns the full player profile document for a given player.
