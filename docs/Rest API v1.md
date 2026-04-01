@@ -88,6 +88,7 @@ GET /match-info
 - `points` is computed as 3 per match win + 1 per draw.
 - `name.display` is `"first last"` from the player document.
 - `clubs`, `deckName`, `deckId`, `deckPhotoUrl`, and `deckUrls` are empty/null if not applicable.
+- Deck image data is exposed as individual top-level fields (`deckPhotoUrl`, `deckUrls`) rather than a nested `deckMeta` object. `deckUrls` contains `origin`, `large`, `medium`, and `small` — each an empty string if not yet generated.
 
 ---
 
@@ -127,6 +128,17 @@ GET /pairings
           "record": "2-0-0",
           "points": 6,
           "deckName": "string",
+          "deckMeta": {
+            "deckName": "string",
+            "deckListDocId": "string | null",
+            "deckVersionDocId": "string | null",
+            "imageUris": {
+              "origin": "https://... | null",
+              "large": "https://... | null",
+              "medium": "https://... | null",
+              "small": "https://... | null"
+            }
+          },
           "country": "Finland | null",
           "clubs": [
             {
@@ -146,6 +158,7 @@ GET /pairings
           "record": "1-1-0",
           "points": 3,
           "deckName": "string",
+          "deckMeta": null,
           "country": "Sweden | null",
           "clubs": null
         }
@@ -165,6 +178,7 @@ GET /pairings
 - Bye matches will have only 1 player in the `players` array.
 - Matches without a valid table number are excluded.
 - `deckName` is empty string if no deck has been submitted.
+- `deckMeta` is `null` if the player has no deck submission. When present it mirrors the deck index entry: `deckListDocId`, `deckVersionDocId`, and `imageUris` (origin, large, medium, small — each `null` if not yet generated).
 
 ---
 
@@ -205,6 +219,17 @@ GET /standings
       "opponentGameWinPercentage": 0.65,
       "dropped": false,
       "deckName": "string",
+      "deckMeta": {
+        "deckName": "string",
+        "deckListDocId": "string | null",
+        "deckVersionDocId": "string | null",
+        "imageUris": {
+          "origin": "https://... | null",
+          "large": "https://... | null",
+          "medium": "https://... | null",
+          "small": "https://... | null"
+        }
+      },
       "country": "Sweden | null",
       "clubs": [
         {
@@ -231,6 +256,7 @@ GET /standings
 - Records and tiebreakers are computed on the fly from match documents, not stored values.
 - `name.display` is `"first last"` from the player document.
 - `deckName` is empty string if no deck has been submitted.
+- `deckMeta` is `null` if the player has no deck submission. When present it mirrors the deck index entry: `deckListDocId`, `deckVersionDocId`, and `imageUris` (origin, large, medium, small — each `null` if not yet generated).
 
 ---
 
