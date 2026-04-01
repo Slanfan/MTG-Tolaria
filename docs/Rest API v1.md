@@ -274,6 +274,37 @@ Returns the full `IPlayerDetails` document as stored in Firestore. Key fields in
 
 ---
 
+### Index Decks *(admin)*
+
+Rebuilds the internal deck name and image index for all players in a given tournament. Used to backfill the index for tournaments that predate the automatic indexing trigger, or to force a full refresh.
+
+```
+POST /index-decks?tournamentId=<id>
+```
+
+**Query Parameters**
+
+| Parameter    | Type   | Required | Description                |
+|--------------|--------|----------|----------------------------|
+| tournamentId | string | Yes      | The tournament document ID |
+
+**Response**
+
+```json
+{
+  "indexed": 64,
+  "withDeck": 51,
+  "withoutDeck": 13
+}
+```
+
+**Notes**
+- Performs a full replace of the index — not a merge.
+- `withDeck` is the count of players who have a deck submission with a linked deck document.
+- `withoutDeck` is the count of players with no deck linked.
+
+---
+
 ## Error Responses
 
 All endpoints return JSON error responses in the following format:
@@ -287,4 +318,4 @@ All endpoints return JSON error responses in the following format:
 | 400    | Bad request — missing or invalid query parameters         |
 | 401    | Unauthorized — missing or invalid Bearer token            |
 | 404    | Not found — tournament, match, or player does not exist   |
-| 405    | Method not allowed — only GET requests are accepted       |
+| 405    | Method not allowed — use GET for data endpoints, POST for index-decks |
