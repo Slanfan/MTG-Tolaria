@@ -6,7 +6,7 @@ Base URL: `https://tolaria.app/api/v1`
 
 ## Authentication
 
-All endpoints require a Bearer token in the `Authorization` header.
+All endpoints require a Bearer token in the `Authorization` header, **except `GET /roster`**, which is public.
 
 ```
 Authorization: Bearer <your-api-token>
@@ -324,6 +324,45 @@ GET /players
 - `deck.imageUris` fields are individually `null` if not yet generated.
 - `dietaryInformation` is `null` if the event does not collect dietary information or the player has not provided it.
 - `dropped` is `true` if the player has dropped from the tournament.
+
+---
+
+### Roster *(public)*
+
+Returns the name and country of every player attending a tournament. This is the only endpoint that does **not** require a Bearer token — safe for embedding on public-facing pages.
+
+```
+GET /roster
+```
+
+**Query Parameters**
+
+| Parameter     | Type   | Required | Description                        |
+|---------------|--------|----------|-------------------------------------|
+| tournamentId  | string | Yes      | The tournament document ID         |
+
+**Response**
+
+```json
+{
+  "players": [
+    {
+      "name": {
+        "first": "string",
+        "last": "string",
+        "nick": "string",
+        "display": "string"
+      },
+      "country": "Sweden | null"
+    }
+  ]
+}
+```
+
+**Notes**
+- `name.display` is `"first last"` from the player document.
+- No deck, contact, check-in, or dietary data is included.
+- Dropped players are still included — this endpoint reflects tournament attendance, not current active status.
 
 ---
 
